@@ -76,12 +76,18 @@ public class Program {
                 g.drawImage(slaveImage, 0, 0, null);
                 g.drawImage(masterImage, 0, 0, null);
             }
+            String relativeFileName = file.getName();
+            int pos = relativeFileName.lastIndexOf(".");
+            if (pos > 0) {
+                relativeFileName = relativeFileName.substring(0, pos);
+            }
+            file.delete();
             try {
-                ImageIO.write(newImage, "JPG", new File(String.valueOf(currentDirectory), random.nextInt(100000) + "snippet.jpg"));
+                ImageIO.write(newImage, "JPG", new File(String.valueOf(currentDirectory), relativeFileName + ".jpg"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            file.delete();
+
 
         }
     }
