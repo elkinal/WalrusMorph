@@ -1,5 +1,8 @@
 package main;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,11 +18,16 @@ public class Program {
     //private static Path currentDirectory = Paths.get(System.getProperty("user.dir"));
     private static Path imageToInsert = Paths.get("C:\\Users\\alxye\\Pictures\\control_image.jpg");
     private static Path currentDirectory = Paths.get("C:\\Users\\alxye\\Pictures\\");
-
+    private static BufferedImage slaveImage;
+    private Graphics graphics;
 
     public static void main(String[] args) {
         ArrayList<File> list = new ArrayList<>();
-        Path path2 = Paths.get(currentDirectory + "a specific image");
+        try {
+            BufferedImage masterImage = ImageIO.read(imageToInsert.toFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             Files.walk(currentDirectory)
                     .filter(p -> p.toString().endsWith(".jpg"))
@@ -37,7 +45,15 @@ public class Program {
         }
 
         for(File file : list) {
-            System.out.println(file);
+            //System.out.println(file);
+            try {
+                slaveImage = ImageIO.read(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            int slaveImageWidth = slaveImage.getWidth();
+            int slaveImageHeight = slaveImage.getHeight();
+            System.out.println(file + " " + slaveImageHeight + "x" + slaveImageWidth);
         }
     }
 }
