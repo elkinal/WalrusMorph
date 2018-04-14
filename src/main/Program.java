@@ -16,12 +16,11 @@ import java.util.Random;
  */
 public class Program {
 
-    //private static Path currentDirectory = Paths.get(System.getProperty("user.dir"));
-    private static Path imageToInsert = Paths.get("C:\\Users\\alxye\\Pictures\\control_image.jpg");
-    private static Path currentDirectory = Paths.get("C:\\Users\\alxye\\Pictures\\");
+    private static Path currentDirectory = Paths.get(System.getProperty("user.dir"));
+    private static Path imageToInsert = Paths.get(currentDirectory + "\\convertedImages\\control_image.jpg");
+    //private static Path currentDirectory = Paths.get("C:\\Users\\alxye\\Pictures\\");
     private static BufferedImage slaveImage;
     private static BufferedImage masterImage;
-    private static BufferedImage newImage;
 
     public static void main(String[] args) {
         Random random = new Random();
@@ -33,19 +32,22 @@ public class Program {
         }
         try {
             Files.walk(currentDirectory)
-                    .filter(p -> p.toString().endsWith(".jpg"))
+                    .filter(p -> p.toString().toLowerCase().endsWith(".png"))
+                    .forEach(z -> list.add(z.toFile()));
+            Files.walk(currentDirectory)
+                    .filter(p -> p.toString().toLowerCase().endsWith(".jpg"))
                     .forEach(z -> list.add(z.toFile()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
+/*        try {
             //make sure the images are stored in an existing directory
             if (Files.notExists(Paths.get(currentDirectory + "\\convertedImages"))) {
                 Files.createDirectories(Paths.get(currentDirectory + "\\convertedImages"));
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         for(File file : list) {
             //System.out.println(file);
@@ -63,7 +65,7 @@ public class Program {
             int w = Math.max(slaveImageWidth, masterImageWidth);
             int h = Math.max(slaveImageHeight, masterImageHeight);
 
-            newImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            BufferedImage newImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
             Graphics g = newImage.getGraphics();
 
             if (slaveImage.getWidth() < masterImage.getWidth()) {
@@ -75,10 +77,11 @@ public class Program {
                 g.drawImage(masterImage, 0, 0, null);
             }
             try {
-                ImageIO.write(newImage, "JPG", new File(String.valueOf(currentDirectory + "\\convertedImages"), random.nextInt(100000) + "snippet.jpg"));
+                ImageIO.write(newImage, "JPG", new File(String.valueOf(currentDirectory), random.nextInt(100000) + "snippet.jpg"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            file.delete();
 
         }
     }
