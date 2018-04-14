@@ -17,8 +17,7 @@ import java.util.Random;
 public class Program {
 
     private static Path currentDirectory = Paths.get(System.getProperty("user.dir"));
-    private static Path imageToInsert = Paths.get(currentDirectory + "\\convertedImages\\control_image.jpg");
-    //private static Path currentDirectory = Paths.get("C:\\Users\\alxye\\Pictures\\");
+    private static Path imageToInsert = Paths.get(currentDirectory + "\\origin\\control_image.jpg");
     private static BufferedImage slaveImage;
     private static BufferedImage masterImage;
 
@@ -40,17 +39,7 @@ public class Program {
         } catch (IOException e) {
             e.printStackTrace();
         }
-/*        try {
-            //make sure the images are stored in an existing directory
-            if (Files.notExists(Paths.get(currentDirectory + "\\convertedImages"))) {
-                Files.createDirectories(Paths.get(currentDirectory + "\\convertedImages"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
         for(File file : list) {
-            //System.out.println(file);
             try {
                 slaveImage = ImageIO.read(file);
             } catch (IOException e) {
@@ -87,8 +76,6 @@ public class Program {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 }
